@@ -1,0 +1,106 @@
+/* Global font style and default text color */
+body, button, input, textarea, nav a {
+  font-family: 'Arial', sans-serif; /* Example font */
+  color: #333; /* Default text color */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+  background-image: radial-gradient(circle, #d0d0d0 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.App {
+  position: relative;
+  display: flex;
+  min-height: 100vh;
+}
+
+.drawer {
+  position: fixed;
+  width: 50px; /* Initial width for closed state */
+  top: 0;
+  bottom: 0;
+  left: 0;
+  transition: width 0.3s;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(5px);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centers the items horizontally in the drawer */
+}
+
+.drawer.open {
+  width: 200px; /* Expanded width for open state */
+}
+
+.menu-button {
+  padding: 10px;
+  cursor: pointer;
+  font-size: 24px;
+  width: 100%;
+  text-align: center;
+  border: none;
+  background: none;
+  outline: none;
+}
+
+nav ul {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+  flex-grow: 1;
+}
+
+nav li {
+  width: 100%;
+  display: flex;
+  align-items: center; /* Aligns items vertically in the center */
+  justify-content: center; /* Centers content when drawer is closed */
+  padding: 10px 0;
+}
+
+.drawer.open nav li {
+  justify-content: flex-start; /* Aligns items to the start when drawer is open */
+}
+
+nav li a {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 10px; /* Adds padding for touch targets */
+  text-decoration: none; /* Removes underline from links */
+  color: inherit; /* Inherits text color from parent */
+}
+
+nav li a span {
+  display: none; /* Initially hides text */
+  margin-left: 10px; /* Provides spacing between icon and text */
+}
+
+.drawer.open nav li a span {
+  display: inline; /* Shows text when drawer is open */
+}
+
+.active {
+  color: #4CAF50; /* Active link color */
+}
+
+main {
+  flex-grow: 1;
+  padding-left: 75px; /* Offset from the closed drawer */
+  transition: padding-left 0.3s;
+}
+
+.drawer.open + main {
+  padding-left: 215px; /* Offset from the open drawer */
+}
+
+/* Remove focus outline from menu button */
+.menu-button:focus {
+  outline: none;
+}
