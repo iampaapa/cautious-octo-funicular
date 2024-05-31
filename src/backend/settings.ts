@@ -15,6 +15,6 @@ export const settingsData = [
     label: 'Create a New Setup',
     route: '/create-setup',
   },
-];
+]
 
-// 
+//

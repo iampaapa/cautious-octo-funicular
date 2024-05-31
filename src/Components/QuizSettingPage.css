@@ -1,63 +1,65 @@
 .quiz-setting-page {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; /* Align items at the top */
-    height: 100vh;
-    padding: 35px;
-    box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Align items at the top */
+  height: 100vh;
+  padding: 35px;
+  box-sizing: border-box;
 }
 
 .settings-container {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-    gap: 20px; /* Space between cards */
-    width: 100%;
-    max-width: 1200px;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px; /* Space between cards */
+  width: 100%;
+  max-width: 1200px;
 }
 
 .setting-option {
-    background-color: #45a4d7; /* A more muted blue color */
-    color: #ffffff;
-    width: 200px;
-    height: 200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 20px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
-    cursor: pointer;
+  background-color: #45a4d7; /* A more muted blue color */
+  color: #ffffff;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+  cursor: pointer;
 }
 
 .setting-option:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .icon {
-    width: 90px;
-    height: 90px;
-    margin-bottom: 10px;
-    background-size: contain;
-    background-repeat: no-repeat;
+  width: 90px;
+  height: 90px;
+  margin-bottom: 10px;
+  background-size: contain;
+  background-repeat: no-repeat;
 }
 
 .microscope-icon {
-    background-image: url('./src/assets/office.svg'); /* Ensure the path is correct */
+  background-image: url('./src/assets/office.svg'); /* Ensure the path is correct */
 }
 
 .apple-icon {
-    background-image: url('./src/assets/nodes.svg'); /* Ensure the path is correct */
+  background-image: url('./src/assets/nodes.svg'); /* Ensure the path is correct */
 }
 
 .plus-icon {
-    background-image: url('./src/assets/plus.svg'); /* Ensure the path is correct */
+  background-image: url('./src/assets/plus.svg'); /* Ensure the path is correct */
 }
 
 .label {
-    font-size: 18px;
-    font-weight: bold;
+  font-size: 18px;
+  font-weight: bold;
 }

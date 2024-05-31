@@ -22,13 +22,18 @@ export const VITE_DEV_SERVER_URL = process.env['VITE_DEV_SERVER_URL']
 export const MAIN_DIST = path.join(process.env.APP_ROOT, 'dist-electron')
 export const RENDERER_DIST = path.join(process.env.APP_ROOT, 'dist')
 
-process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 'public') : RENDERER_DIST
+process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
+  ? path.join(process.env.APP_ROOT, 'public')
+  : RENDERER_DIST
 
 let win: BrowserWindow | null
 
 function createWindow() {
   win = new BrowserWindow({
-    icon: path.join(process.env.VITE_PUBLIC, '/Users/paapakwesiquansah/Desktop/electron/work/electron-vite-project/public/icon-app.png'),
+    icon: path.join(
+      process.env.VITE_PUBLIC,
+      '/Users/paapakwesiquansah/Desktop/electron/work/electron-vite-project/public/icon-app.png',
+    ),
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
       nodeIntegration: true, // Ensure Node integration
@@ -38,7 +43,7 @@ function createWindow() {
 
   // Test active push message to Renderer-process.
   win.webContents.on('did-finish-load', () => {
-    win?.webContents.send('main-process-message', (new Date).toLocaleString())
+    win?.webContents.send('main-process-message', new Date().toLocaleString())
   })
 
   if (VITE_DEV_SERVER_URL) {
@@ -49,7 +54,7 @@ function createWindow() {
   }
 
   // Open DevTools for debugging
-  win.webContents.openDevTools();
+  win.webContents.openDevTools()
 }
 
 // Quit when all windows are closed, except on macOS. There, it's common

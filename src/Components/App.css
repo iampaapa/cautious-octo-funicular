@@ -1,5 +1,9 @@
 /* Global font style and default text color */
-body, button, input, textarea, nav a {
+body,
+button,
+input,
+textarea,
+nav a {
   font-family: 'Arial', sans-serif; /* Example font */
   color: #333; /* Default text color */
 }
@@ -87,7 +91,7 @@ nav li a span {
 }
 
 .active {
-  color: #4CAF50; /* Active link color */
+  color: #4caf50; /* Active link color */
 }
 
 main {
