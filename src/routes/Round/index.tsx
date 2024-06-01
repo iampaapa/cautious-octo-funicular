@@ -1,8 +1,8 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react'
-import Visualizer from './Visualizer'
+import Visualizer from '../../Components/Visualizer'
 import './Round.css'
 
-const Round: React.FC = () => {
+const Index: React.FC = () => {
   const [audioContext, setAudioContext] = useState<AudioContext | null>(null)
   const [analyser, setAnalyser] = useState<AnalyserNode | null>(null)
   const [isRecording, setIsRecording] = useState(false)
@@ -90,4 +90,4 @@ const Round: React.FC = () => {
   )
 }
 
-export default Round
+export default Index

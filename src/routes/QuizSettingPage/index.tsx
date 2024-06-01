@@ -1,9 +1,9 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import './QuizSettingPage.css'
-import { settingsData } from '/Users/paapakwesiquansah/Desktop/electron/work/electron-vite-project/src/backend/settings'
+import { settingsData } from '../../backend/settings'
 
-const QuizSettingPage: React.FC = () => {
+const Index: React.FC = () => {
   const navigate = useNavigate()
 
   const handleCardClick = (route: string) => {
@@ -28,4 +28,4 @@ const QuizSettingPage: React.FC = () => {
   )
 }
 
-export default QuizSettingPage
+export default Index

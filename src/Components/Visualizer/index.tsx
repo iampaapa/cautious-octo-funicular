@@ -1,7 +1,7 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import './Visualizer.css'
 
-const Visualizer: React.FC<{ analyser: AnalyserNode }> = ({ analyser }) => {
+const Index: React.FC<{ analyser: AnalyserNode }> = ({ analyser }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
@@ -36,4 +36,4 @@ const Visualizer: React.FC<{ analyser: AnalyserNode }> = ({ analyser }) => {
   return <canvas ref={canvasRef} width="600" height="400"></canvas>
 }
 
-export default Visualizer
+export default Index

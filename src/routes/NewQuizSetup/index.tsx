@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import './NewQuizSetup.css'
 
-const NewQuizSetup: React.FC = () => {
+const Index: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     difficulty: '1',
@@ -246,4 +246,4 @@ const NewQuizSetup: React.FC = () => {
   )
 }
 
-export default NewQuizSetup
+export default Index
