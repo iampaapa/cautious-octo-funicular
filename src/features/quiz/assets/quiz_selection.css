@@ -2,7 +2,6 @@
   display: flex;
   justify-content: center;
   align-items: flex-start; /* Align items at the top */
-  height: 100vh;
   padding: 35px;
   box-sizing: border-box;
 }
