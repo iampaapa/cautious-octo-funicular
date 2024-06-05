@@ -63,8 +63,6 @@ export const router: RouteObject[] = [
           }
         }
 
-        console.log(userQuizzesParsed)
-        console.log(params.setupId)
         const quiz = userQuizzesParsed.find(
           (value) => value.id === params.setupId,
         )
