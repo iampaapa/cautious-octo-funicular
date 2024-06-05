@@ -1,27 +1,28 @@
 import React, { useState } from 'react';
 import type { Field, QuizSettings, Rounds, Subject } from '@/features/quiz/types';
 import { v4 as uuid } from 'uuid';
-import { useNavigate } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import saveQuiz from '../composables/saveQuiz';
 
 
 const subjects: Subject[] = ['Physics', 'Chemistry', 'Biology', 'Mathematics'];
 
 const  CustomQuizSetup: React.FC = () => {
+  const data = useLoaderData() as QuizSettings
 
     const navigate = useNavigate()
 
-  const [quizSettings, setQuizSettings] = useState<QuizSettings>({
-    id: uuid(),
-    name: '',
-    rounds: {
-      roundOne: { fields: [] },
-      roundTwo: { fields: [] },
-      roundThree: { fields: [] },
-      roundFour: { fields: [] },
-      roundFive: { fields: [] },
-    },
-  });
+    const [quizSettings, setQuizSettings] = useState<QuizSettings>(data || {
+        id: uuid(),
+        name: '',
+        rounds: {
+          roundOne: { fields: [] },
+          roundTwo: { fields: [] },
+          roundThree: { fields: [] },
+          roundFour: { fields: [] },
+          roundFive: { fields: [] },
+        },
+      });
 
   const handleFieldChange = (round: Rounds, index: number, field: Partial<Field>) => {
     setQuizSettings((prev) => ({
@@ -48,7 +49,12 @@ const  CustomQuizSetup: React.FC = () => {
         }
     }
 
-    quizTypesParsed.push(quizSettings)
+    if (quizTypesParsed.find((quiz) => quiz.id === quizSettings.id)) {
+      quizTypesParsed = quizTypesParsed.map((quiz) => (quiz.id === quizSettings.id ? quizSettings : quiz));
+    } else {
+        quizTypesParsed.push(quizSettings);
+    }
+
     const updatedQuizTypes = JSON.stringify(quizTypesParsed);
 
     localStorage.setItem('quizTypes', updatedQuizTypes);
