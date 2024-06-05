@@ -2,21 +2,30 @@ type Subject = 'Physics' | 'Chemistry' | 'Biology' | 'Mathematics'
 
 type RoundSettings = {
   fields: Field[]
-};
+}
 
 export interface Field {
-  name: Subject,
+  name: Subject
   questionCount: number
 }
 
-export type QuizSettings = { rounds: { [key in Rounds]: RoundSettings }, score: number }
-
-export interface UserQuiz {
-  id: string;
-  settings: QuizSettings;
+export interface QuizSettings {
+  id: string
+  name: string
+  rounds: { [key in Rounds]: RoundSettings }
 }
 
-export type Rounds = 'roundOne' | 'roundTwo' | 'roundThree' | 'roundFour' | 'roundFive';
+export interface UserQuiz {
+  id: string
+  settings: QuizSettings
+}
+
+export type Rounds =
+  | 'roundOne'
+  | 'roundTwo'
+  | 'roundThree'
+  | 'roundFour'
+  | 'roundFive'
 
 export interface Question {
   answer: string

@@ -3,6 +3,7 @@ import Quiz from '@/features/quiz/pages/Quiz.tsx'
 import { getQuestions } from '@/features/quiz/api'
 import type { Rounds, UserQuiz } from '@/features/quiz/types'
 import StandardNSMQ from '@/features/quiz/pages/StandardNSMQ.tsx'
+import CustomQuizSetup from '../pages/CustomQuizSetup'
 
 export const router: RouteObject[] = [{
   path: '/take-quiz/:quizId',
@@ -43,4 +44,9 @@ export const router: RouteObject[] = [{
   {
     path: '/standard-nsmq',
     element: <StandardNSMQ />
-  }]
+  },
+  {
+    path: "/create-setup",
+    element: <CustomQuizSetup />
+  }
+]

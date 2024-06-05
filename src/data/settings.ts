@@ -1,6 +1,8 @@
 import type { QuizSettings } from '@/features/quiz/types'
 
 export const STANDARD_NSMQ_SETTINGS: QuizSettings = {
+  id: 'standard-nsmq',
+  name: 'Standard NSMQ',
   rounds: {
     roundOne: {
       fields: [
@@ -103,5 +105,4 @@ export const STANDARD_NSMQ_SETTINGS: QuizSettings = {
       ]
     }
   },
-  score: 0
 }

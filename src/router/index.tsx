@@ -38,10 +38,6 @@ export const router = createBrowserRouter([
         element: <CreateSetup />
       },
       {
-        path: '/create-setup',
-        element: <CreateSetup />
-      },
-      {
         path: '/round',
         element: <Round />
       }
