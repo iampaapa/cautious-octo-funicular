@@ -1,6 +1,6 @@
 // import React from 'react';
 
-function ViewTranscripts() {
+function StandardNSMQ() {
   return (
     <div>
       <h2>View Past Quiz Transcripts</h2>
@@ -12,4 +12,4 @@ function ViewTranscripts() {
   )
 }
 
-export default ViewTranscripts
+export default StandardNSMQ

@@ -1,9 +1,9 @@
 // import React from 'react';
 
-function ViewTranscripts() {
+function CreateSetup() {
   return (
     <div>
-      <h2>View Past Quiz Transcripts</h2>
+      <h2>Create Setup Page</h2>
       <p>
         This page will display the past results and transcripts of the quizzes
         taken by the user.
@@ -12,4 +12,4 @@ function ViewTranscripts() {
   )
 }
 
-export default ViewTranscripts
+export default CreateSetup
