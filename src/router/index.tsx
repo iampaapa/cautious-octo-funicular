@@ -1,13 +1,13 @@
 import { createBrowserRouter } from 'react-router-dom'
-import QuizSettingPage from '../routes/QuizSettingPage'
-import GenerateReport from '../routes/GenerateReport'
-import RewardsBadges from '../routes/RewardsBadges'
-import Settings from '../routes/Settings'
-import StandardNSMQ from '../routes/StandardNSMQ'
-import CreateSetup from '../routes/CreateSetup'
-import Round from '../routes/Round'
-import ErrorPage from '../routes/error-page'
-import App from '../App.tsx'
+import RewardsBadges from '@/routes/RewardsBadges'
+import Settings from '@/routes/Settings'
+import Round from '@/routes/Round'
+import ErrorPage from '@/routes/error-page'
+import App from '@/App.tsx'
+import { router as quizRouter } from '@/features/quiz/router'
+import { router as transcriptRouter } from '@/features/transcripts/router'
+import NewQuizSetup from '@/routes/NewQuizSetup'
+
 
 export const router = createBrowserRouter([
   {
@@ -15,14 +15,8 @@ export const router = createBrowserRouter([
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
-      {
-        path: '/takeQuiz',
-        element: <QuizSettingPage />
-      },
-      {
-        path: '/viewTranscripts',
-        element: <GenerateReport />
-      },
+      ...quizRouter,
+      ...transcriptRouter,
       {
         path: '/rewardsBadge',
         element: <RewardsBadges />
@@ -32,16 +26,8 @@ export const router = createBrowserRouter([
         element: <Settings />
       },
       {
-        path: '/standard-nsmq',
-        element: <StandardNSMQ />
-      },
-      {
         path: '/kwame-ai',
-        element: <StandardNSMQ />
-      },
-      {
-        path: '/create-setup',
-        element: <CreateSetup />
+        element: <NewQuizSetup />
       },
       {
         path: '/round',
@@ -50,5 +36,3 @@ export const router = createBrowserRouter([
     ]
   }
 ])
-
-export { RouterProvider } from 'react-router-dom'

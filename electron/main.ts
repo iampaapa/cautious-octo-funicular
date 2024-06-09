@@ -1,20 +1,14 @@
-import { app, BrowserWindow } from 'electron'
-// import { createRequire } from 'node:module'
+import { app, BrowserWindow, ipcMain } from 'electron'
+import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
+import * as fs from 'node:fs'
 
-// const require = createRequire(import.meta.url)
+const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-// The built directory structure
-//
-// ├─┬─┬ dist
-// │ │ └── index.html
-// │ │
-// │ ├─┬ dist-electron
-// │ │ ├── main.js
-// │ │ └── preload.mjs
-// │
+const initSqlJs = require('sql.js')
+
 process.env.APP_ROOT = path.join(__dirname, '..')
 
 // 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x
@@ -28,17 +22,60 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL
 
 let win: BrowserWindow | null
 
-function createWindow() {
+async function createWindow() {
   win = new BrowserWindow({
     icon: path.join(
       process.env.VITE_PUBLIC,
-      '/Users/paapakwesiquansah/Desktop/electron/work/electron-vite-project/public/icon-app.png',
+      '/Users/paapakwesiquansah/Desktop/electron/work/electron-vite-project/public/icon-app.png'
     ),
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),
       nodeIntegration: true, // Ensure Node integration
       contextIsolation: false, // Disable context isolation
-    },
+      nodeIntegrationInWorker: true
+    }
+  })
+
+  ipcMain.handle('get-questions', async (_event, args) => {
+    const { subject, questionType, numberOfQuestions } = args
+
+    const SQL = await initSqlJs({
+      locateFile: (file: string) => `./node_modules/sql.js/dist/${file}`
+      // Required to load the wasm binary asynchronously. Of course, you can host it wherever you want
+      // You can omit locateFile completely when running in node
+    })
+    const data = fs.readFileSync('./electron/data.db')
+    const db = new SQL.Database(data)
+
+    try {
+      const query = `
+          SELECT *
+          FROM questions
+          WHERE subject = :subject
+            AND question_type = :questionType
+          ORDER BY random()
+          LIMIT :limit;
+      `
+
+      const stmt = await db.prepare(query, {
+        ':subject': subject,
+        ':questionType': questionType,
+        ':limit': numberOfQuestions
+      })
+      const result = []
+
+      while (stmt.step()) {
+        const row = stmt.getAsObject()
+        result.push(row)
+      }
+
+      stmt.free()
+
+      return result
+    } catch (error) {
+      console.error('Error fetching questions:', error)
+      return [] // Return an empty array on error
+    }
   })
 
   // Test active push message to Renderer-process.
