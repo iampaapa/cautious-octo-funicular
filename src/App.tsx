@@ -27,7 +27,7 @@ function App() {
   }
 
   return (
-    <div className="App">
+    <div className="App m-4">
       <div className={`drawer ${drawerOpen ? 'open' : 'closed'}`}>
         <button onClick={handleToggleDrawer} className="menu-button">
           &#9776;
@@ -35,7 +35,7 @@ function App() {
         <nav>
           <ul>
             <li>
-              <NavLink to="/takeQuiz" className="nav-link">
+              <NavLink to="/" className="nav-link">
                 <i className="fas fa-question-circle"></i>
                 <span>Take a Quiz</span>
               </NavLink>

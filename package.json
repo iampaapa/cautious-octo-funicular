@@ -17,11 +17,13 @@
     "react-countdown": "^2.3.5",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.23.1",
+    "sherpa-onnx": "^1.9.27",
     "simplex-noise": "^4.0.1",
     "sql.js": "^1.10.3",
     "three": "^0.164.1",
     "uuid": "^9.0.1",
-    "vite-tsconfig-paths": "^4.3.2"
+    "vite-tsconfig-paths": "^4.3.2",
+    "wav": "^1.0.2"
   },
   "devDependencies": {
     "@types/react": "^18.2.64",
