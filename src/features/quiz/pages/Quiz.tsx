@@ -1,8 +1,10 @@
-import { Timer } from '@/features/quiz/components/Timer.tsx'
+import Timer from '@/features/quiz/components/Timer.tsx'
 import { useLoaderData } from 'react-router-dom'
 import type { Question } from '@/features/quiz/types'
 import QuestionWaveform from '@/features/quiz/components/QuestionWaveform.tsx'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { generateAudio } from '@/api'
+import Countdown, { CountdownApi } from 'react-countdown'
 
 export default function Quiz() {
   const data = useLoaderData() as Question[]
@@ -12,7 +14,15 @@ export default function Quiz() {
   const [currentRound, setCurrentRound] = useState(1)
   const [isChangingRounds, setIsChangingRounds] = useState(false)
 
-  const handleNextQuestion = () => {
+  const timerRef = useRef<CountdownApi | null>(null)
+
+  const setTimerRef = (countdown: Countdown | null): void => {
+    if (countdown) {
+      timerRef.current = countdown.getApi()
+    }
+  }
+
+  const handleNextQuestion = async () => {
     const nextQuestion = currentQuestion + 1
 
     if (data[nextQuestion].question_type != currentRound.toString()) {
@@ -23,13 +33,27 @@ export default function Quiz() {
 
     setCurrentQuestion((prevState) => prevState + 1)
     setCountDownFrom(Date.now() + 5000)
+
+    await generateAudio(data[nextQuestion].question)
+    timerRef.current?.start()
   }
 
-  const handleStartNextRound = () => {
+  const handleStartNextRound = async () => {
     setIsChangingRounds(false)
     setCurrentQuestion((prevState) => prevState + 1)
+
+    await readQuestion()
     setCountDownFrom(Date.now() + 5000)
+    timerRef.current?.start()
   }
+
+  async function readQuestion() {
+    await generateAudio(data[currentQuestion].question)
+  }
+
+  useEffect(() => {
+    readQuestion().then(() => timerRef.current?.start())
+  }, [])
 
   return (
     <div className="h-full w-full flex justify-center items-center">
@@ -44,6 +68,7 @@ export default function Quiz() {
           <>
             <div className="w-full flex justify-between">
               <Timer
+                setRef={setTimerRef}
                 className=""
                 onTimerComplete={handleNextQuestion}
                 countDownFrom={countDownFrom}

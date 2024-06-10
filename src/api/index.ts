@@ -108,3 +108,9 @@ export async function getQuiz(quizId: string): Promise<UserQuiz | null> {
   if (quiz) return quiz
   return null
 }
+
+export async function generateAudio(text: string) {
+  return await ipcRenderer.invoke('generate-audio', {
+    text: text
+  })
+}

@@ -1,7 +1,8 @@
 import { RouteObject } from 'react-router-dom'
 import Quiz from '@/features/quiz/pages/Quiz.tsx'
-import { getQuestions } from '@/features/quiz/api'
-import type { QuizSettings, Rounds, UserQuiz } from '@/features/quiz/types'
+import { getQuestions } from '@/api'
+import type { QuizSettings, Rounds } from '@/features/quiz/types'
+import type { UserQuiz } from '@/types/types'
 import StandardNSMQ from '@/features/quiz/pages/StandardNSMQ.tsx'
 import CustomQuizSetup from '@/features/quiz/pages/CustomQuizSetup'
 import QuizSelection from '@/features/quiz/pages/QuizSelection'
@@ -40,11 +41,11 @@ export const router: RouteObject[] = [
       }
 
       return questions
-    },
+    }
   },
   {
     path: '/standard-nsmq',
-    element: <StandardNSMQ />,
+    element: <StandardNSMQ />
   },
   {
     path: '/create-setup/:setupId?',
@@ -64,7 +65,7 @@ export const router: RouteObject[] = [
         }
 
         const quiz = userQuizzesParsed.find(
-          (value) => value.id === params.setupId,
+          (value) => value.id === params.setupId
         )
 
         console.log(quiz)
@@ -73,10 +74,10 @@ export const router: RouteObject[] = [
         console.log('no setup id')
         return null
       }
-    },
+    }
   },
   {
-    path: '/takeQuiz',
+    path: '/',
     element: <QuizSelection />,
     loader: async () => {
       const quizTypes = localStorage.getItem('quizTypes')
@@ -91,6 +92,6 @@ export const router: RouteObject[] = [
       }
 
       return quizTypesParsed
-    },
-  },
+    }
+  }
 ]

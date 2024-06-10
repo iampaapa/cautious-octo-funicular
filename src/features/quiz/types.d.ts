@@ -1,3 +1,5 @@
+import type { SetupType } from '@/types/types'
+
 type Subject = 'Physics' | 'Chemistry' | 'Biology' | 'Mathematics'
 
 type RoundSettings = {
@@ -13,11 +15,7 @@ export interface QuizSettings {
   id: string
   name: string
   rounds: { [key in Rounds]: RoundSettings }
-}
-
-export interface UserQuiz {
-  id: string
-  settings: QuizSettings
+  playerSetup: SetupType
 }
 
 export type Rounds =

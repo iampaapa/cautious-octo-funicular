@@ -2,22 +2,44 @@
 {
   $schema: 'https://raw.githubusercontent.com/electron-userland/electron-builder/master/packages/app-builder-lib/scheme.json',
   appId: 'YourAppID',
-  asar: true,
+  asar: false,
   productName: 'YourAppName',
   directories: {
     output: 'release/${version}'
   },
-  files: ['dist', 'dist-electron'],
-  extraResources: [],
+  files: [
+    'dist',
+    'dist-electron/**/*',
+    {
+      "from": "./electron/static",
+      "to": "./static",
+      "filter": [
+        "**/*"
+      ]
+    }
+  ],
+  extraFiles: [
+    {
+      "from": "./electron/static",
+      "to": "./static",
+      "filter": [
+        "**/*"
+      ]
+    }
+  ],
   mac: {
-    target: ['dmg'],
+    target: [
+      'dmg'
+    ],
     artifactName: '${productName}-Mac-${version}-Installer.${ext}'
   },
   win: {
     target: [
       {
         target: 'nsis',
-        arch: ['x64']
+        arch: [
+          'x64'
+        ]
       }
     ],
     artifactName: '${productName}-Windows-${version}-Setup.${ext}'
@@ -29,7 +51,9 @@
     deleteAppDataOnUninstall: false
   },
   linux: {
-    target: ['AppImage'],
+    target: [
+      'AppImage'
+    ],
     artifactName: '${productName}-Linux-${version}.${ext}'
   }
 }
