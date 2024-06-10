@@ -3,10 +3,12 @@ import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import * as fs from 'node:fs'
+import generateAudio from './tts'
 
 const require = createRequire(import.meta.url)
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
+const player = require('node-wav-player')
 const initSqlJs = require('sql.js')
 
 process.env.APP_ROOT = path.join(__dirname, '..')
@@ -44,7 +46,8 @@ async function createWindow() {
       // Required to load the wasm binary asynchronously. Of course, you can host it wherever you want
       // You can omit locateFile completely when running in node
     })
-    const data = fs.readFileSync('./electron/data.db')
+
+    const data = fs.readFileSync('./electron/static/data.db')
     const db = new SQL.Database(data)
 
     try {
@@ -78,16 +81,32 @@ async function createWindow() {
     }
   })
 
+  ipcMain.handle('generate-audio', async (_event, { text }) => {
+    const audioFile = generateAudio(text)
+
+    try {
+      await player.play({
+        path: audioFile,
+        sync: true
+      })
+    } catch (e) {
+      console.error(e)
+      return false
+    }
+
+    return true
+  })
+
   // Test active push message to Renderer-process.
   win.webContents.on('did-finish-load', () => {
     win?.webContents.send('main-process-message', new Date().toLocaleString())
   })
 
   if (VITE_DEV_SERVER_URL) {
-    win.loadURL(VITE_DEV_SERVER_URL)
+    await win.loadURL(VITE_DEV_SERVER_URL)
   } else {
     // win.loadFile('dist/index.html')
-    win.loadFile(path.join(RENDERER_DIST, 'index.html'))
+    await win.loadFile(path.join(RENDERER_DIST, 'index.html'))
   }
 
   // Open DevTools for debugging
@@ -104,11 +123,11 @@ app.on('window-all-closed', () => {
   }
 })
 
-app.on('activate', () => {
+app.on('activate', async () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow()
+    await createWindow()
   }
 })
 

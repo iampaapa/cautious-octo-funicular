@@ -24,5 +24,4 @@ release
 *.njsproj
 *.sln
 *.sw?
-/electron/vits-piper-en_US-amy-low/
-/electron/sherpa-onnx-nemo-ctc-en-conformer-small/
+/electron/static/**/*

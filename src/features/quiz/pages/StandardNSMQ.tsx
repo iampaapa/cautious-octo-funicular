@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { STANDARD_NSMQ_SETTINGS } from '@/data/settings.ts'
-import saveQuiz from '@/features/quiz/composables/saveQuiz'
+import { saveQuiz } from '@/api'
 
 export default function StandardNSMQ() {
   const navigate = useNavigate()
