@@ -24,7 +24,7 @@ This desktop application is designed to enhance the preparation process for the 
 1. **Clone the Repository**
 
    ```bash
-   git clone [https://github.com/iampaapa/cautious-octo-funicular](https://github.com/iampaapa/cautious-octo-funicular/)
+   git clone https://github.com/iampaapa/cautious-octo-funicular/
    cd cautious-octo-funicular
    ```
 
