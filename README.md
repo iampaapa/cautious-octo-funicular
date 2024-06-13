@@ -49,7 +49,7 @@ This desktop application is designed to enhance the preparation process for the 
 
 3. **Initial Setup**
 
-   - **Download Dependencies**: The application will download the phi3 model and the encrypted SQLite file containing the questions during the first run. Ensure you have a stable internet connection for this step.
+  - **Download Dependencies**: The application will download the phi3 model and the encrypted SQLite file containing the questions during the first run. Ensure you have a stable internet connection for this step.
 
 ## Running the Application
 
