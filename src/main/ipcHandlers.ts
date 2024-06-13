@@ -3,6 +3,7 @@ import { Question } from '../renderer/src/features/quiz/types'
 import { ipcMain } from 'electron'
 import database from '../../build/data.db?asset'
 import generateAudio from './generateAudio?modulePath'
+import startRecording from './stt_online?modulePath'
 import { Worker } from 'node:worker_threads'
 
 ipcMain.handle('get-questions', async (_event, args) => {
@@ -61,5 +62,19 @@ ipcMain.handle('generate-audio', async (_event, { text }) => {
     worker.on('error', () => {
       reject(false)
     })
+  })
+})
+
+ipcMain.on('start-recording', () => {
+  const recorderWorker = new Worker(startRecording)
+
+  recorderWorker.postMessage(null)
+
+  recorderWorker.on('message', (message) => {
+    console.log(message)
+  })
+
+  ipcMain.on('stop-recording', async () => {
+    await recorderWorker.terminate()
   })
 })

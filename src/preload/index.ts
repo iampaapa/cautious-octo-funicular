@@ -8,6 +8,10 @@ export interface API {
 
   generateAudio(text: string): Promise<void>
 
+  startRecording(): void
+
+  stopRecording(): void
+
   invoke(...args: Parameters<typeof ipcRenderer.invoke>): Promise<unknown>
 
   send(...args: Parameters<typeof ipcRenderer.send>): void
@@ -19,6 +23,12 @@ export interface API {
 
 // Custom APIs for renderer
 const api: API = {
+  startRecording(): void {
+    ipcRenderer.send('start-recording')
+  },
+  stopRecording() {
+    ipcRenderer.send('stop-recording')
+  },
   generateAudio(text: string): Promise<void> {
     return ipcRenderer.invoke('generate-audio', { text })
   },

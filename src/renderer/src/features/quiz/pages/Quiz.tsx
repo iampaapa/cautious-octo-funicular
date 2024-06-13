@@ -5,9 +5,8 @@ import QuestionWaveform from '@renderer/features/quiz/components/QuestionWavefor
 import { JSX, useEffect, useRef, useState } from 'react'
 import { generateAudio } from '@renderer/api'
 import Countdown, { CountdownApi } from 'react-countdown'
-import { io, type Socket } from 'socket.io-client'
 
-const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io('ws://localhost:3124')
+// const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io('ws://localhost:3124')
 
 export default function Quiz(): JSX.Element {
   const data = useLoaderData() as Question[]
@@ -61,25 +60,14 @@ export default function Quiz(): JSX.Element {
   }, [])
 
   const [recording, setRecording] = useState(false)
-  const audioContextRef = useRef<AudioContext | null>(null)
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null)
+  // const audioContextRef = useRef<AudioContext | null>(null)
+  // const mediaRecorderRef = useRef<MediaRecorder | null>(null)
 
   useEffect(() => {
     if (recording) {
-      navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-        audioContextRef.current = new window.AudioContext()
-        // const source = audioContextRef.current.createMediaStreamSource(stream)
-        mediaRecorderRef.current = new MediaRecorder(stream)
-
-        mediaRecorderRef.current.ondataavailable = (event): void => {
-          socket.emit('audioData', event.data)
-        }
-
-        mediaRecorderRef.current.start(250) // Send data every 250ms
-      })
+      window.api.startRecording()
     } else {
-      mediaRecorderRef.current?.stop()
-      audioContextRef.current?.close()
+      window.api.stopRecording()
     }
   }, [recording])
 
