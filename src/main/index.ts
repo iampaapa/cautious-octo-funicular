@@ -2,6 +2,9 @@ import { app, BrowserWindow, shell } from 'electron'
 import { join } from 'path'
 import { electronApp, is, optimizer } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import socket from './socket.io?modulePath'
+
+const { Worker } = require('node:worker_threads')
 
 async function createWindow(): Promise<void> {
   // Create the browser window.
@@ -35,6 +38,7 @@ async function createWindow(): Promise<void> {
   }
 
   await import('./ipcHandlers')
+  new Worker(socket)
 }
 
 // This method will be called when Electron has finished

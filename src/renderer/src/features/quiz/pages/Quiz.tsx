@@ -7,7 +7,7 @@ import { generateAudio } from '@renderer/api'
 import Countdown, { CountdownApi } from 'react-countdown'
 import { io, type Socket } from 'socket.io-client'
 
-const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io('http://localhost:3124')
+const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io('ws://localhost:3124')
 
 export default function Quiz(): JSX.Element {
   const data = useLoaderData() as Question[]

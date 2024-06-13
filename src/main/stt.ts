@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+
 import { createReadStream } from 'node:fs'
 import { Readable } from 'stream'
 import * as wav from 'wav'
@@ -7,43 +9,41 @@ const sherpa_onnx = require('sherpa-onnx')
 export function createOfflineRecognizer() {
   const featConfig = {
     sampleRate: 16000,
-    featureDim: 80,
+    featureDim: 80
   }
 
   const modelConfig = {
     transducer: {
       encoder: '',
       decoder: '',
-      joiner: '',
+      joiner: ''
     },
     paraformer: {
-      model: '',
+      model: ''
     },
     nemoCtc: {
-      model:
-        './electron/static/sherpa-onnx-nemo-ctc-en-conformer-small/model.int8.onnx',
+      model: './electron/static/sherpa-onnx-nemo-ctc-en-conformer-small/model.int8.onnx'
     },
     whisper: {
       encoder: '',
       decoder: '',
       language: '',
       task: '',
-      tailPaddings: -1,
+      tailPaddings: -1
     },
     tdnn: {
-      model: '',
+      model: ''
     },
-    tokens:
-      './electron/static/sherpa-onnx-nemo-ctc-en-conformer-small/tokens.txt',
+    tokens: './electron/static/sherpa-onnx-nemo-ctc-en-conformer-small/tokens.txt',
     numThreads: 1,
     debug: 0,
     provider: 'cpu',
-    modelType: 'nemo_ctc',
+    modelType: 'nemo_ctc'
   }
 
   const lmConfig = {
     model: '',
-    scale: 1.0,
+    scale: 1.0
   }
 
   const config = {
@@ -53,13 +53,13 @@ export function createOfflineRecognizer() {
     decodingMethod: 'greedy_search',
     maxActivePaths: 4,
     hotwordsFile: '',
-    hotwordsScore: 1.5,
+    hotwordsScore: 1.5
   }
 
   return sherpa_onnx.createOfflineRecognizer(config)
 }
 
-export default function stt() {
+export default function stt(): void {
   const recognizer = createOfflineRecognizer()
   const stream = recognizer.createStream()
 
@@ -72,7 +72,7 @@ export default function stt() {
   reader.on('format', ({ audioFormat, bitDepth, channels, sampleRate }) => {
     if (sampleRate != recognizer.config.featConfig.sampleRate) {
       throw new Error(
-        `Only support sampleRate ${recognizer.config.featConfig.sampleRate}. Given ${sampleRate}`,
+        `Only support sampleRate ${recognizer.config.featConfig.sampleRate}. Given ${sampleRate}`
       )
     }
 
@@ -93,15 +93,13 @@ export default function stt() {
     .pipe(reader)
     .on('finish', function () {
       // tail padding
-      const floatSamples = new Float32Array(
-        recognizer.config.featConfig.sampleRate * 0.5,
-      )
+      const floatSamples = new Float32Array(recognizer.config.featConfig.sampleRate * 0.5)
 
       buf.push(floatSamples)
 
       const flattened = Float32Array.from(
         // @ts-expect-error TS doesn't like reduce with typed arrays
-        buf.reduce((a, b) => [...a, ...b], []),
+        buf.reduce((a, b) => [...a, ...b], [])
       )
 
       stream.acceptWaveform(recognizer.config.featConfig.sampleRate, flattened)
@@ -120,7 +118,7 @@ export default function stt() {
       const int16Samples = new Int16Array(
         chunk.buffer,
         chunk.byteOffset,
-        chunk.length / Int16Array.BYTES_PER_ELEMENT,
+        chunk.length / Int16Array.BYTES_PER_ELEMENT
       )
 
       const floatSamples = new Float32Array(int16Samples.length)
