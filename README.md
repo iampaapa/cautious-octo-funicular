@@ -27,16 +27,10 @@ This desktop application is designed to enhance the preparation process for the 
 
 2. **Install Dependencies**
 
-   Navigate to the `backend` directory and install the backend dependencies:
-
-   ```bash
-   npm install
-   npm run dev
-   ```
+   Navigate to the `backend` directory and run the backend dependencies. Note that it is written in python so Colab is the best place to run it.
    
 3. **Initial Setup**
-
-   - **Download Dependencies**: The application will download the tuned evaluation model and the encrypted SQLite file containing the questions during the first run. Ensure you have a stable internet connection for this step.
+   - **Download Dependencies**: Please download the following folder from this link; https://drive.google.com/drive/folders/15p_1zao2OU7gpJ3Xw2GWezFvPcBqqddx?usp=drive_link. There are instructions on where to move the dependencies to be able to run it
 
 **NB**: The backend is in the backend folder. It contains the recommendation system and the Question Synthesis Engine.
 
