@@ -28,6 +28,7 @@ export default function Quiz(): JSX.Element {
   const [currentRound, setCurrentRound] = useState(1)
   const [userAnswer, setUserAnswer] = useState('')
   const [score, setScore] = useState(0)
+  const [preamble, setPreamble] = useState('')
 
   const timerRef = useRef<CountdownApi | null>(null)
 
@@ -40,6 +41,9 @@ export default function Quiz(): JSX.Element {
   const handleNextQuestion = async (): Promise<void> => {
     const nextQuestion = currentQuestion + 1
 
+    if (data[nextQuestion].has_preamble && preamble !== data[nextQuestion].preamble_text) {
+      await generateAudio(data[nextQuestion].preamble_text)
+    }
     if (data[nextQuestion].question_type != currentRound.toString()) {
       setStatus(STATUS.CHANGING_ROUNDS)
       setCurrentRound((prevState) => prevState + 1)
