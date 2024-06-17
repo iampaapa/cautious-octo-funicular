@@ -26,3 +26,5 @@ out
 /resources/sherpa-onnx-nemo-ctc-en-conformer-small/
 /resources/vits-piper-en_US-amy-low/
 /resources/sherpa-onnx-streaming-zipformer-bilingual-zh-en-2023-02-20/
+/build/ollama/
+/resources/ollama/

@@ -6,15 +6,25 @@ import { JSX, useEffect, useRef, useState } from 'react'
 import { generateAudio } from '@renderer/api'
 import Countdown, { CountdownApi } from 'react-countdown'
 
-// const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io('ws://localhost:3124')
+enum STATUS {
+  IDLE,
+  RECORDING,
+  PROCESSING_TRANSCRIPTION,
+  TRANSCRIPTION_COMPLETE,
+  ERROR,
+  CHANGING_ROUNDS
+}
 
 export default function Quiz(): JSX.Element {
   const data = useLoaderData() as Question[]
 
+  const [status, setStatus] = useState(STATUS.IDLE)
+
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [countDownFrom, setCountDownFrom] = useState(Date.now() + 15000)
   const [currentRound, setCurrentRound] = useState(1)
-  const [isChangingRounds, setIsChangingRounds] = useState(false)
+  const [userAnswer, setUserAnswer] = useState('')
+  const [score, setScore] = useState(0)
 
   const timerRef = useRef<CountdownApi | null>(null)
 
@@ -28,7 +38,7 @@ export default function Quiz(): JSX.Element {
     const nextQuestion = currentQuestion + 1
 
     if (data[nextQuestion].question_type != currentRound.toString()) {
-      setIsChangingRounds(true)
+      setStatus(STATUS.CHANGING_ROUNDS)
       setCurrentRound((prevState) => prevState + 1)
       return
     }
@@ -41,7 +51,7 @@ export default function Quiz(): JSX.Element {
   }
 
   const handleStartNextRound = async (): Promise<void> => {
-    setIsChangingRounds(false)
+    setStatus(STATUS.IDLE)
     setCurrentQuestion((prevState) => prevState + 1)
 
     await readQuestion()
@@ -56,12 +66,33 @@ export default function Quiz(): JSX.Element {
   // useEffect being called twice is normal and doesn't happen in prod
   // see react blog for explainer
   useEffect(() => {
+    window.api.onTranscriptionComplete((text) => {
+      setUserAnswer(text)
+      setStatus(STATUS.PROCESSING_TRANSCRIPTION)
+    })
+
+    window.api.onJudgeAnswerComplete((score) => {
+      setScore(score)
+      setStatus(STATUS.TRANSCRIPTION_COMPLETE)
+    })
+
     readQuestion().then(() => timerRef.current?.start())
   }, [])
 
+  useEffect(() => {
+    if (status === STATUS.PROCESSING_TRANSCRIPTION) {
+      window.api.judgeAnswer(
+        userAnswer,
+        data[currentQuestion].question,
+        data[currentQuestion].answer
+      )
+    } else if (status === STATUS.TRANSCRIPTION_COMPLETE) {
+      setStatus(STATUS.IDLE)
+      handleNextQuestion().then(() => {})
+    }
+  }, [status])
+
   const [recording, setRecording] = useState(false)
-  // const audioContextRef = useRef<AudioContext | null>(null)
-  // const mediaRecorderRef = useRef<MediaRecorder | null>(null)
 
   useEffect(() => {
     if (recording) {
@@ -73,12 +104,18 @@ export default function Quiz(): JSX.Element {
 
   return (
     <div className="h-full w-full flex justify-center items-center">
+      <span>Score: {score}</span>
       <div className="p-8 min-h-[70%] w-9/12 flex flex-col items-center">
-        {isChangingRounds ? (
+        {status === STATUS.CHANGING_ROUNDS ? (
           <>
             <h1>Round {currentRound}</h1>
             <h2>Get ready for the next round</h2>
             <button onClick={handleStartNextRound}>Start</button>
+          </>
+        ) : status === STATUS.PROCESSING_TRANSCRIPTION ? (
+          <>
+            <h1>Processing transcription...</h1>
+            <h2>{userAnswer}</h2>
           </>
         ) : (
           <>

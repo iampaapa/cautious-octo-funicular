@@ -32,6 +32,7 @@
     "electron-updater": "^6.1.7",
     "naudiodon": "^2.3.6",
     "node-wav-player": "^0.2.0",
+    "ollama": "^0.5.2",
     "react-countdown": "^2.3.5",
     "react-router-dom": "^6.23.1",
     "sherpa-onnx": "^1.9.27",
@@ -40,7 +41,8 @@
     "sql.js": "^1.10.3",
     "utf-8-validate": "^5.0.10",
     "uuid": "^10.0.0",
-    "wav": "^1.0.2"
+    "wav": "^1.0.2",
+    "whatwg-fetch": "^3.6.20"
   },
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^2.0.0",

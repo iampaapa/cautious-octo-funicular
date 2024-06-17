@@ -4,25 +4,46 @@ import { electronAPI } from '@electron-toolkit/preload'
 import { Question } from '../renderer/src/features/quiz/types'
 
 export interface API {
-  getQuestions(subject: string, limit: number, questionType: number): Promise<Question[]>
-
   generateAudio(text: string): Promise<void>
 
-  startRecording(): void
-
-  stopRecording(): void
+  getQuestions(subject: string, limit: number, questionType: number): Promise<Question[]>
 
   invoke(...args: Parameters<typeof ipcRenderer.invoke>): Promise<unknown>
 
-  send(...args: Parameters<typeof ipcRenderer.send>): void
+  judgeAnswer(answer: string, question: string, rightAnswer: string): void
 
   off(...args: Parameters<typeof ipcRenderer.off>): Electron.IpcRenderer
 
   on(...args: Parameters<typeof ipcRenderer.on>): Electron.IpcRenderer
+
+  onJudgeAnswerComplete: (callback: (score: number) => void) => void
+
+  onTranscriptionComplete: (callback: (text: string) => void) => void
+
+  send(...args: Parameters<typeof ipcRenderer.send>): void
+
+  startRecording(): void
+
+  stopRecording(): void
 }
 
 // Custom APIs for renderer
 const api: API = {
+  onJudgeAnswerComplete: (callback: (score: number) => void) => {
+    ipcRenderer.on('judge-answer-complete', (_event, score: number) => {
+      callback(score)
+    })
+  },
+
+  judgeAnswer(answer: string, question: string, rightAnswer: string): void {
+    ipcRenderer.send('judge-answer', { answer, question, rightAnswer })
+  },
+
+  onTranscriptionComplete: (callback: (text: string) => void) =>
+    ipcRenderer.on('transcription-complete', (_event, text: string) => {
+      callback(text)
+    }),
+
   startRecording(): void {
     ipcRenderer.send('start-recording')
   },

@@ -67,58 +67,57 @@ export function createOnlineRecognizer() {
   return sherpa_onnx.createOnlineRecognizer(recognizerConfig)
 }
 
-parentPort.on('message', () => {
-  console.log(parentPort)
-  const recognizer = createOnlineRecognizer()
-  const stream = recognizer.createStream()
+const recognizer = createOnlineRecognizer()
+const stream = recognizer.createStream()
 
-  let lastText = ''
-  let segmentIndex = 0
+const ai = new portAudio.AudioIO({
+  inOptions: {
+    channelCount: 1,
+    closeOnError: false,
+    deviceId: -1, // Use -1 or omit the deviceId to select the default device
+    sampleFormat: portAudio.SampleFormatFloat32,
+    sampleRate: recognizer.config.featConfig.sampleRate
+  }
+})
 
-  const ai = new portAudio.AudioIO({
-    inOptions: {
-      channelCount: 1,
-      closeOnError: false,
-      deviceId: -1, // Use -1 or omit the deviceId to select the default device
-      sampleFormat: portAudio.SampleFormatFloat32,
-      sampleRate: recognizer.config.featConfig.sampleRate
+let lastText = ''
+let segmentIndex = 0
+
+ai.on('data', (data) => {
+  const samples = new Float32Array(data.buffer)
+
+  stream.acceptWaveform(recognizer.config.featConfig.sampleRate, samples)
+
+  while (recognizer.isReady(stream)) {
+    recognizer.decode(stream)
+  }
+
+  const isEndpoint = recognizer.isEndpoint(stream)
+  const text = recognizer.getResult(stream).text
+
+  if (text.length > 0 && lastText != text) {
+    parentPort.postMessage(text)
+  }
+
+  if (isEndpoint) {
+    if (text.length > 0) {
+      lastText = text
+      segmentIndex += 1
     }
-  })
+    recognizer.reset(stream)
+  }
+})
 
-  ai.on('data', (data) => {
-    const samples = new Float32Array(data.buffer)
-
-    stream.acceptWaveform(recognizer.config.featConfig.sampleRate, samples)
-
-    while (recognizer.isReady(stream)) {
-      recognizer.decode(stream)
+parentPort.on('message', (message: string) => {
+  if (message === 'start') {
+    if (ai.isPaused()) {
+      ai.resume()
+    } else {
+      ai.start()
     }
-
-    const isEndpoint = recognizer.isEndpoint(stream)
-    const text = recognizer.getResult(stream).text
-
-    if (text.length > 0 && lastText != text) {
-      parentPort.postMessage(text)
-      console.log(text)
-    }
-    if (isEndpoint) {
-      if (text.length > 0) {
-        lastText = text
-        segmentIndex += 1
-      }
-      recognizer.reset(stream)
-    }
-  })
-
-  parentPort.on('close', () => {
-    stream.free()
-    recognizer.free()
-  })
-
-  ai.on('close', () => {
-    stream.free()
-    recognizer.free()
-  })
-
-  ai.start()
+  } else {
+    ai.pause()
+    // parentPort.postMessage({ text: lastText, segmentIndex })
+    lastText = ''
+  }
 })

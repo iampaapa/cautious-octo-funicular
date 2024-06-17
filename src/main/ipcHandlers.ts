@@ -3,8 +3,14 @@ import { Question } from '../renderer/src/features/quiz/types'
 import { ipcMain } from 'electron'
 import database from '../../build/data.db?asset'
 import generateAudio from './generateAudio?modulePath'
+import inference from './ollama/useOllama.js?modulePath'
 import startRecording from './stt_online?modulePath'
 import { Worker } from 'node:worker_threads'
+
+import { mainWindow } from './index'
+
+const recorderWorker = new Worker(startRecording)
+const inferenceWorker = new Worker(inference)
 
 ipcMain.handle('get-questions', async (_event, args) => {
   const initSqlJs = require('sql.js')
@@ -65,16 +71,38 @@ ipcMain.handle('generate-audio', async (_event, { text }) => {
   })
 })
 
-ipcMain.on('start-recording', () => {
-  const recorderWorker = new Worker(startRecording)
+let text = ''
 
-  recorderWorker.postMessage(null)
+ipcMain.on('start-recording', () => {
+  recorderWorker.postMessage('start')
 
   recorderWorker.on('message', (message) => {
-    console.log(message)
+    text = message
   })
 
-  ipcMain.on('stop-recording', async () => {
-    await recorderWorker.terminate()
+  ipcMain.on('stop-recording', () => {
+    mainWindow.webContents.send('transcription-complete', text)
+    recorderWorker.postMessage('stop')
+  })
+})
+
+ipcMain.on('judge-answer', async (_event, args) => {
+  const { answer, question, rightAnswer } = args
+
+  const jsonInput = {
+    question: question,
+    true_answer: rightAnswer,
+    student_answer: answer,
+    leniency_level: 3,
+    partial_marks: true,
+    max_marks: 3
+  }
+
+  inferenceWorker.postMessage(jsonInput)
+
+  inferenceWorker.on('message', (message: string) => {
+    message = message.replace('```json\n', '').replace('```', '')
+    const messageParsed = JSON.parse(message)
+    mainWindow.webContents.send('judge-answer-complete', messageParsed.marks_given)
   })
 })
