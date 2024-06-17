@@ -1,6 +1,15 @@
-import type { Question } from '@renderer/features/quiz/types'
-import React from 'react'
+import { JSX } from 'react'
+import '../assets/visualizer.scss'
 
-const QuestionWaveform: React.FC<{ question: Question }> = (props) => <>{props.question.question}</>
+const QuestionWaveform = (): JSX.Element => (
+  <>
+    <div className="bars">
+      <div className="bars__item"></div>
+      <div className="bars__item"></div>
+      <div className="bars__item"></div>
+      <div className="bars__item"></div>
+    </div>
+  </>
+)
 
 export default QuestionWaveform

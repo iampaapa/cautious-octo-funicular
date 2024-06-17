@@ -5,9 +5,12 @@ import QuestionWaveform from '@renderer/features/quiz/components/QuestionWavefor
 import { JSX, useEffect, useRef, useState } from 'react'
 import { generateAudio } from '@renderer/api'
 import Countdown, { CountdownApi } from 'react-countdown'
+import ChangingRounds from '../components/ChangingRounds'
+import ProcessingTranscript from '../components/ProcessingTranscript'
 
 enum STATUS {
   IDLE,
+  READING_QUESTION,
   RECORDING,
   PROCESSING_TRANSCRIPTION,
   TRANSCRIPTION_COMPLETE,
@@ -60,7 +63,9 @@ export default function Quiz(): JSX.Element {
   }
 
   async function readQuestion(): Promise<void> {
+    setStatus(STATUS.READING_QUESTION)
     await generateAudio(data[currentQuestion].question)
+    setStatus(STATUS.IDLE)
   }
 
   // useEffect being called twice is normal and doesn't happen in prod
@@ -106,36 +111,29 @@ export default function Quiz(): JSX.Element {
     <div className="h-full w-full flex justify-center items-center">
       <span>Score: {score}</span>
       <div className="p-8 min-h-[70%] w-9/12 flex flex-col items-center">
-        {status === STATUS.CHANGING_ROUNDS ? (
-          <>
-            <h1>Round {currentRound}</h1>
-            <h2>Get ready for the next round</h2>
-            <button onClick={handleStartNextRound}>Start</button>
-          </>
-        ) : status === STATUS.PROCESSING_TRANSCRIPTION ? (
-          <>
-            <h1>Processing transcription...</h1>
-            <h2>{userAnswer}</h2>
-          </>
-        ) : (
-          <>
-            <div className="w-full flex justify-between">
-              <Timer
-                setRef={setTimerRef}
-                className=""
-                onTimerComplete={handleNextQuestion}
-                countDownFrom={countDownFrom}
-              />
-              <span>Round {currentRound}</span>
-            </div>
-            <br />
-            <QuestionWaveform question={data[currentQuestion]} />
+        <div className="w-full flex justify-between">
+          <Timer
+            setRef={setTimerRef}
+            className=""
+            onTimerComplete={handleNextQuestion}
+            countDownFrom={countDownFrom}
+          />
+          <span>Round {currentRound}</span>
+        </div>
 
-            <button onClick={() => setRecording(!recording)}>
-              {recording ? 'Stop Recording' : 'Start Recording'}
-            </button>
-          </>
+        {status === STATUS.CHANGING_ROUNDS ? (
+          <ChangingRounds currentRound={currentRound} handleStartNextRound={handleStartNextRound} />
+        ) : status === STATUS.PROCESSING_TRANSCRIPTION ? (
+          <ProcessingTranscript userAnswer={userAnswer} />
+        ) : status === STATUS.READING_QUESTION ? (
+          <QuestionWaveform />
+        ) : (
+          <></>
         )}
+
+        <button onClick={() => setRecording(!recording)}>
+          {recording ? 'Stop Recording' : 'Start Recording'}
+        </button>
       </div>
     </div>
   )
