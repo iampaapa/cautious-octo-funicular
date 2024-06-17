@@ -10,10 +10,8 @@ This desktop application is designed to enhance the preparation process for the 
 - **Multi-user Contest Modes**: Compete with peers in real-time.
 - **Detailed Explanations**: Get comprehensive explanations for each answer.
 - **Offline Functionality**: The application runs without internet access after the initial setup.
-- **Adaptive Difficulty**: Quizzes adapt to the user's difficulty level.
 - **Progress Tracking**: Track progress and generate reports on performance.
 - **Real-Time Feedback and Hints**: Receive feedback and hints during practice.
-- **Gamification**: Earn badges and rewards, and appear on leaderboards.
 
 ## Prerequisites
 
@@ -33,70 +31,15 @@ This desktop application is designed to enhance the preparation process for the 
    Navigate to the `backend` directory and install the backend dependencies:
 
    ```bash
-   cd backend
    npm install
+   npm run dev
    ```
-
-   Navigate back to the root directory and install the Electron app dependencies:
-
-   ```bash
-   cd ..
-   npm install
-   ```
-
+   
 3. **Initial Setup**
 
    - **Download Dependencies**: The application will download the tuned evaluation model and the encrypted SQLite file containing the questions during the first run. Ensure you have a stable internet connection for this step.
 
-## Running the Application
-
-1. **Start the Backend Server**
-
-   Navigate to the `backend` directory and start the server:
-
-   ```bash
-   cd backend
-   node server.js
-   ```
-
-2. **Start the Electron App**
-
-   Navigate back to the root directory and start the Electron app:
-
-   ```bash
-   cd ..
-   npm start
-   ```
-
-## Usage
-
-Once the application is running, you can start using the various features:
-
-- **Practice Quizzes**: Select practice sessions based on different rounds of the NSMQ.
-- **Multiplayer Mode**: Challenge peers in real-time competitions.
-- **Track Progress**: View detailed performance reports and analytics.
-- **Customize Settings**: Choose voice preferences and adjust difficulty levels.
-
-## Development
-
-### Project Structure
-
-- **`/backend`**: Contains the Node.js backend server and SQLite database.
-- **`/src`**: Contains the React components and Electron configuration.
-
-### Available Scripts
-
-- **`npm run dev`**: Starts the Electron app in development
-
-### Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/your-feature`).
-3. Commit your changes (`git commit -m 'Add your feature'`).
-4. Push to the branch (`git push origin feature/your-feature`).
-5. Open a Pull Request.
+The backend is in the backend folder. It contains the recommendation system and the Question Synthesis Engine.
 
 ### License
 
