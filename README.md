@@ -6,11 +6,9 @@ This desktop application is designed to enhance the preparation process for the 
 
 ## Features
 
-- **Simulate Numerous Riddles**: Practice with a wide variety of riddles similar to those used in NSMQ.
-- **Simulate Competition Rounds**: Experience questions from different rounds of the competition.
-- **Multiplayer Modes**: Compete with peers in real-time.
+- **Simulate Competition Rounds**: Practice with a wide variety of questions from different rounds of the competition similar to those used in NSMQ.
+- **Multi-user Contest Modes**: Compete with peers in real-time.
 - **Detailed Explanations**: Get comprehensive explanations for each answer.
-- **High-Quality Voices**: Select from different African accents for an engaging learning experience.
 - **Offline Functionality**: The application runs without internet access after the initial setup.
 - **Adaptive Difficulty**: Quizzes adapt to the user's difficulty level.
 - **Progress Tracking**: Track progress and generate reports on performance.
@@ -19,16 +17,15 @@ This desktop application is designed to enhance the preparation process for the 
 
 ## Prerequisites
 
-- **Node.js**: Ensure you have Node.js installed on your system.
-- **Git**: Ensure you have Git installed for cloning the repository.
+- **Nothing**. Just checkout a release and install it on your respective system and you're ready to go. 
 
 ## Installation
 
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/username/repository.git
-   cd repository
+   git clone https://github.com/iampaapa/cautious-octo-funicular/
+   cd cautious-octo-funicular
    ```
 
 2. **Install Dependencies**
@@ -49,7 +46,8 @@ This desktop application is designed to enhance the preparation process for the 
 
 3. **Initial Setup**
 
-  - **Download Dependencies**: The application will download the phi3 model and the encrypted SQLite file containing the questions during the first run. Ensure you have a stable internet connection for this step.
+   - **Download Dependencies**: The application will download the tuned evaluation model and the encrypted SQLite file containing the questions during the first run. Ensure you have a stable internet connection for this step.
+
 
 ## Running the Application
 
@@ -89,9 +87,7 @@ Once the application is running, you can start using the various features:
 
 ### Available Scripts
 
-- **`npm start`**: Starts the Electron app.
-- **`npm run build`**: Builds the Electron app for production.
-- **`npm test`**: Runs the test suite.
+- **`npm run dev`**: Starts the Electron app in development
 
 ### Contributing
 
