@@ -38,7 +38,7 @@ This desktop application is designed to enhance the preparation process for the 
 
    - **Download Dependencies**: The application will download the tuned evaluation model and the encrypted SQLite file containing the questions during the first run. Ensure you have a stable internet connection for this step.
 
-The backend is in the backend folder. It contains the recommendation system and the Question Synthesis Engine.
+**NB**: The backend is in the backend folder. It contains the recommendation system and the Question Synthesis Engine.
 
 ### License
 
@@ -47,10 +47,6 @@ This project is licensed under the Apache 2.0 License. See the [LICENSE](LICENSE
 ## Contact
 
 For any inquiries or support, please contact [officialpaapa@gmail.com](mailto:officialpaapa@gmail.com).
-
-### Links
-
-- **Demo Video**: [Demo Video](https://www.youtube.com/linktovideo)
 
 ---
 
