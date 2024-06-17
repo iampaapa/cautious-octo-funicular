@@ -27,6 +27,7 @@ export default function Quiz(): JSX.Element {
   const [currentRound, setCurrentRound] = useState(1)
   const [userAnswer, setUserAnswer] = useState('')
   const [score, setScore] = useState(0)
+  const [preambleText, setPreambleText] = useState('')
 
   const timerRef = useRef<CountdownApi | null>(null)
 
@@ -63,6 +64,11 @@ export default function Quiz(): JSX.Element {
 
   async function readQuestion(): Promise<void> {
     setStatus(STATUS.READING_QUESTION)
+    if (data[currentQuestion].has_preamble && preambleText != data[currentQuestion].preamble_text) {
+      setPreambleText(data[currentQuestion].preamble_text)
+      await generateAudio(data[currentQuestion].preamble_text)
+    }
+
     await generateAudio(data[currentQuestion].question)
   }
 
