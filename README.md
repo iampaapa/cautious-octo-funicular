@@ -7,7 +7,6 @@ This desktop application is designed to enhance the preparation process for the 
 ## Features
 
 - **Simulate Competition Rounds**: Practice with a wide variety of questions from different rounds of the competition similar to those used in NSMQ.
-- **Multi-user Contest Modes**: Compete with peers in real-time.
 - **Detailed Explanations**: Get comprehensive explanations for each answer.
 - **Offline Functionality**: The application runs without internet access after the initial setup.
 - **Progress Tracking**: Track progress and generate reports on performance.
