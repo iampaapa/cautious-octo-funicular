@@ -5,9 +5,11 @@ import QuestionWaveform from '@renderer/features/quiz/components/QuestionWavefor
 import { JSX, useEffect, useRef, useState } from 'react'
 import { generateAudio } from '@renderer/api'
 import Countdown, { CountdownApi } from 'react-countdown'
+import VoiceRecorder from '../components/VoiceRecorder'
 
 enum STATUS {
   IDLE,
+  READING_QUESTION,
   RECORDING,
   PROCESSING_TRANSCRIPTION,
   TRANSCRIPTION_COMPLETE,
@@ -60,6 +62,7 @@ export default function Quiz(): JSX.Element {
   }
 
   async function readQuestion(): Promise<void> {
+    setStatus(STATUS.READING_QUESTION)
     await generateAudio(data[currentQuestion].question)
   }
 
@@ -96,6 +99,7 @@ export default function Quiz(): JSX.Element {
 
   useEffect(() => {
     if (recording) {
+      setStatus(STATUS.RECORDING)
       window.api.startRecording()
     } else {
       window.api.stopRecording()
@@ -117,6 +121,28 @@ export default function Quiz(): JSX.Element {
             <h1>Processing transcription...</h1>
             <h2>{userAnswer}</h2>
           </>
+        ) : status === STATUS.READING_QUESTION ? (
+          <>
+            <QuestionWaveform />
+            <VoiceRecorder
+              onClick={() => {
+                setRecording(!recording)
+                setStatus(STATUS.PROCESSING_TRANSCRIPTION)
+              }}
+              animate={recording}
+            />
+          </>
+        ) : status === STATUS.RECORDING ? (
+          <>
+            <span>Recording...</span>
+            <VoiceRecorder
+              onClick={() => {
+                setRecording(!recording)
+                setStatus(STATUS.PROCESSING_TRANSCRIPTION)
+              }}
+              animate={recording}
+            />
+          </>
         ) : (
           <>
             <div className="w-full flex justify-between">
@@ -129,11 +155,14 @@ export default function Quiz(): JSX.Element {
               <span>Round {currentRound}</span>
             </div>
             <br />
-            <QuestionWaveform question={data[currentQuestion]} />
 
-            <button onClick={() => setRecording(!recording)}>
-              {recording ? 'Stop Recording' : 'Start Recording'}
-            </button>
+            <VoiceRecorder
+              onClick={() => {
+                setRecording(!recording)
+                setStatus(STATUS.PROCESSING_TRANSCRIPTION)
+              }}
+              animate={recording}
+            />
           </>
         )}
       </div>
